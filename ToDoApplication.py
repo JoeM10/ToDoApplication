@@ -5,9 +5,8 @@ def viewTasks(taskList):
         print("\nHere are your current tasks:")
         for task in range(len(taskList)):
             print(f"{task+1}. {taskList[task]}")
-    return choices()
 
-def addTask() -> str | None:
+def addTask(taskList) -> str | None:
     try:
         addedTask = str(input("Task to add: ").strip())
         if addedTask == "":
@@ -18,7 +17,6 @@ def addTask() -> str | None:
 
     except ValueError as error:
         print(error)
-    return choices()
 
 def removeTask(taskList):
     if taskList == []:
@@ -28,42 +26,40 @@ def removeTask(taskList):
         for task in range(len(taskList)):
             print(f"{task+1}. {taskList[task]}")
         try:
-            taskToRemove = input("\nTask number to remove: ")
+            taskToRemove = input("\nTask number to remove: ").strip()
             if not taskToRemove.isdigit():
-                raise ValueError("Invalid input. Please enter a number from the list.")
+                raise ValueError("\nInvalid input. Please enter a number from the list.")
             taskToRemove = int(taskToRemove)
             if 1 <= taskToRemove <= len(taskList):
                 removedTask = taskList.pop(taskToRemove - 1)
                 print(f"\n{removedTask} has been removed from your task list.")
             else:
-                raise ValueError("Invalid task number.")
+                raise ValueError("\nInvalid task number.")
         except ValueError as error:
             print(error)
-    return choices()
 
 def choices():
-    print("\nWhat would you like to do?")
-    try:
-        choice = input("1.) View Tasks\n2.) Add Task\n3.) Remove Task\n4.) Exit\nChoice: ").strip()
-        if choice not in ["1", "2", "3", "4"]:
-            raise ValueError("Invalid choice. Please select a number between 1 and 3.")
-        
-        elif choice == "1":
-            viewTasks(taskList)
-        
-        elif choice == "2":
-            addTask()
-        
-        elif choice == "3":
-            removeTask(taskList)
-        
-        elif choice == "4":
-            print("Exiting the To Do App. Goodbye!")
-            return
+    while True:
+        try:
+            choice = input("\nWhat would you like to do?\n1.) View Tasks\n2.) Add Task\n3.) Remove Task\n4.) Exit\nChoice: ").strip()
+            if choice not in ["1", "2", "3", "4"]:
+                raise ValueError("\nInvalid choice. Please select a number between 1 and 4.")
+            
+            elif choice == "1":
+                viewTasks(taskList)
+            
+            elif choice == "2":
+                addTask(taskList)
+            
+            elif choice == "3":
+                removeTask(taskList)
+            
+            elif choice == "4":
+                print("\nExiting the To Do App. Goodbye!")
+                return False
 
-    except ValueError as error:
-        print(error)
-        return choices()
+        except ValueError as error:
+            print(error)
 
 
 def main():
